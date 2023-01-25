@@ -9,9 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import config
 
-from . extensions import bootstrap, mail, moment, db, login_manager
-from . models import User
-
+from .extensions import bootstrap, mail, moment, db, login_manager
+from .models import User
 
 
 def create_app(config_name):
@@ -23,25 +22,28 @@ def create_app(config_name):
 
     # Blueprints
     from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    app.register_blueprint(auth_blueprint, url_prefix="/auth")
 
     from .main import main as main_blueprint
+
     app.register_blueprint(main_blueprint)
-    
+
     from .pgenerator import pgenerator as pgenerator_blueprint
+
     app.register_blueprint(pgenerator_blueprint)
 
     from .vault import vault as vault_blueprint
+
     app.register_blueprint(vault_blueprint)
 
     @app.before_first_request
     def create_tables():
         db.create_all()
-        print('Created Database')
+        print("Created Database")
 
-    
     def register_user():
-        user = User(username='admin', password='admin', email='admin@example.com')
+        user = User(username="admin", password="admin", email="admin@example.com")
         db.session.add(user)
         db.session.commit()
 
@@ -50,9 +52,10 @@ def create_app(config_name):
     def check_user_table():
         if User.query.count() == 0:
             register_user()
-            
+
     from .encryption import generate_key, SALT
     from cryptography.fernet import Fernet
+
     @app.context_processor
     def utility_processor():
         def decrypt_credential(password: str, master_password) -> str:
@@ -65,10 +68,10 @@ def create_app(config_name):
             decrypted_password = fernet.decrypt(password)
 
             return decrypted_password
+
         return dict(decrypt_credential=decrypt_credential)
 
     return app
-
 
 
 def configure_extensions(app):
@@ -84,6 +87,7 @@ def configure_extensions(app):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+
     login_manager.init_app(app)
 
     # flask-moment
@@ -91,9 +95,10 @@ def configure_extensions(app):
 
 
 def register_user():
-    user = User(username='admin', password='admin')
+    user = User(username="admin", password="admin")
     db.session.add(user)
     db.session.commit()
+
 
 # check if the user table is empty and register a new user if needed
 def check_user_table():
