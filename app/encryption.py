@@ -11,13 +11,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SALT = os.getenv('SECRET_KEY').encode()
+SALT = os.getenv("SECRET_KEY").encode()
 
 
 def encrypt_credential(password: str, master_password: str) -> str:
 
     # convert password to byte
-    password = password.encode('utf-8')
+    password = password.encode("utf-8")
     encrypt_key = generate_key(master_password, salt=SALT)
 
     # Use the key to encrypt the password
@@ -30,19 +30,15 @@ def encrypt_credential(password: str, master_password: str) -> str:
 def generate_key(master_password: str, salt: bytes) -> bytes:
 
     # convert to byte
-    master_password = master_password.encode('utf-8')
+    master_password = master_password.encode("utf-8")
 
     # Use the PBKDF2 algorithm to generate a key from the password and salt
-    kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
-        length=32,
-        salt=salt,
-        iterations=100000
-    )
+    kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=100000)
     key = base64.urlsafe_b64encode(kdf.derive(master_password))
 
     return key
-  
+
+
 def decrypt_credential(password: str, master_password: str) -> str:
     # convert password to byte
     # password = password.decode('utf-8')
@@ -53,4 +49,3 @@ def decrypt_credential(password: str, master_password: str) -> str:
     decrypted_password = fernet.decrypt(password)
 
     return decrypted_password
-
