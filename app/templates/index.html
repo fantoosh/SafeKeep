@@ -1,118 +1,163 @@
-{% extends "layout.html" %}
-
-{% import "bootstrap/wtf.html" as wtf %}
-
-{% block title %}Password Generator - Homepage{% endblock %}
-
-
-{% block content %}
+{% extends "layout.html" %} {% import "bootstrap/wtf.html" as wtf %} {% block
+title %}Password Generator - Homepage{% endblock %} {% block content %}
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="61">
-
-
-    <div class="container-fluid" style="color:white;padding:20px;background:#537fbe;">
-        <div class="container col-xxl-8 px-4 py-5">
-          
-            <div class="col-lg-8 mx-auto">
-              <div class="row">
-
-                <div class="col-xs-6">
-                  <h1 class="display-2">SafeKeep</h1>  
-                  <p class="lead mb-4 ">
-                      Store and manage your Password Securely.
-                  </p>
-                </div>
-              </div>
-            
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-                  <div class="row">
-                   
-                  <div class="col-md-2" style="padding:5px;">
-                    <a role="button" class="btn btn-primary btn-lg px-4 me-sm-3" href="{{ url_for('vault.view_credentials') }}">Vault</a>
-                  </div>
-                  <div class="col-md-10" style="padding:5px;">
-                    <a role="button" class="btn btn-primary btn-lg px-4 me-sm-3" href="{{ url_for('pgenerator.pgenerate') }}">Password Generator</a>
-                  </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  
-    <div class="row" style="color:black;padding:20px;">
-
-        <div class="col-lg-2 hidden-md hidden-sm hidden-xs" >
-            <nav id="myScrollspy" >
-              <ul class="nav nav-pills nav-stacked affix-top" data-spy="affix" data-offset-top="250">
-                    <li><a href="#section1"><h3>Introduction</h3></a></li>
-                    <li><a href="#section2"><h4>How does it work?</h4></a></li>
-                    <li><a href="#section3">Generate Password</a></li>
-                    <li><a href="#section4">Storing Login credentials</a></li>
-              </ul>
-            </nav>
-      
-        </div>
-        
-        <div class="col-lg-10">
-          <div id="section1">    
-            <h1>Intro to Password Managers</h1>
-            <p>
-              Welcome to our password manager and generator website! We understand that it can be difficult to keep track of all the different logins and passwords you use for various websites, which is why we have created a tool to help you manage them securely.
-              Our password manager allows users to store and organize their passwords, login credentials, and other sensitive information in a secure, encrypted manner. It is available as a web-based service and to use a vault, you would have to remember only one Username and Password to login
-              <br>In addition to storing and generating passwords, SafeKeep also offers a number of other features to help users keep their sensitive information safe.
-            </p>
+  <div
+    class="container-fluid"
+    style="color: white; padding: 20px; background: #537fbe"
+  >
+    <div class="container col-xxl-8 px-4 py-5">
+      <div class="col-lg-8 mx-auto">
+        <div class="row">
+          <div class="col-xs-6">
+            <h1 class="display-2">SafeKeep</h1>
+            <p class="lead mb-4">Store and manage your Password Securely.</p>
           </div>
-          <div id="section2"> 
-            <h1>How does it work?</h1>
-            <p>
-              The website has a password manager feature that allows registered users to save logging credentials (username, password, website) for other websites. This information is stored in an encrypted form in the database to ensure the security of the data.
-              The website uses the AES-256 encryption algorithm to encrypt the logging credentials stored in the database. AES-256 is a widely used and highly secure encryption algorithm that uses a complex key to encrypt and decrypt data.
-              The website also has a password generator feature that allows users to create strong, unique passwords for use on other websites. These passwords are not stored in the database and are provided to the user for their own use.
-              Overall, the website provides a convenient and secure way for users to manage their logging credentials for other websites, as well as generate strong passwords for use on those websites. The encryption used ensures that the data stored in the database is protected and cannot be accessed by unauthorized parties.
-            </p>
-          </div>        
-          <div id="section3">
-            <h1>Generate Password</h1>
-            <p>
-              Generates strong, unique passwords for online accounts: Pgenerator can generate random, secure passwords that meet the requirements of a particular online service or account. This helps users avoid using weak or reused passwords, which are more vulnerable to being hacked.
-            </p>
-            <div class="text-center">
-            <div class="row">
-              <div class="col-xs-6 col-md-2 img-fluid" >
-              <img src="static/images/pgenerator.png" class="img-rounded" style="max-width: 100%;"alt="pgenerator"> 
-              </div>
-              <div class="col-xs-6 col-md-2 img-fluid">
-                <img src="static/images/pgfilter.png" class="img-rounded"  style="max-width: 100%;"alt="pgenerator" > 
-                </div>
-              </div>
+        </div>
+
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+          <div class="row">
+            <div class="col-md-2" style="padding: 5px">
+              <a
+                role="button"
+                class="btn btn-primary btn-lg px-4 me-sm-3"
+                href="{{ url_for('vault.view_credentials') }}"
+                >Vault</a
+              >
+            </div>
+            <div class="col-md-10" style="padding: 5px">
+              <a
+                role="button"
+                class="btn btn-primary btn-lg px-4 me-sm-3"
+                href="{{ url_for('pgenerator.pgenerate') }}"
+                >Password Generator</a
+              >
             </div>
           </div>
-          <div id="section4">
-            <h1>Storing Login credentials</h1>
-            <p>
-              We use AES-256 encryption to keep your sensitive information, such as passwords, safe and secure. Our encryption algorithm is virtually impossible to crack, ensuring that your data is protected even if our database is accessed by an unauthorized user. With our fast and efficient encryption and decryption process, you can trust that your passwords are in good hands. Protect your information and try our password manager today.
-            </p>
-          
-            <div class="row">
-              
-                <div class="col-xs-7 col-md-2 img-fluid" >
-                <img src="static/images/credential.png" class="img-rounded" style="max-width: 100%;"alt="pgenerator"> 
-                </div>
-                <div class="col-xs-12 col-md-5 img-fluid align-middle">
-                <img src="static/images/credential2.png" class="img-rounded"  style="max-width: 100%;"alt="pgenerator" > 
-                </div>
-              </div>
-           
-          </div>   
         </div>
       </div>
-    
-<div>
-{% include "footer.html" %}
+    </div>
+  </div>
 
-</div>
+  <div class="row" style="color: black; padding: 20px">
+    <div class="col-lg-2 hidden-md hidden-sm hidden-xs">
+      <nav id="myScrollspy">
+        <ul
+          class="nav nav-pills nav-stacked affix-top"
+          data-spy="affix"
+          data-offset-top="250"
+        >
+          <li>
+            <a href="#section1"><h3>Introduction</h3></a>
+          </li>
+          <li>
+            <a href="#section2"><h4>How does it work?</h4></a>
+          </li>
+          <li><a href="#section3">Generate Password</a></li>
+          <li><a href="#section4">Storing Login credentials</a></li>
+        </ul>
+      </nav>
+    </div>
 
+    <div class="col-lg-10">
+      <div id="section1">
+        <h1>Intro to Password Managers</h1>
+        <p>
+          Welcome to our password manager and generator website! We understand
+          that it can be difficult to keep track of all the different logins and
+          passwords you use for various websites, which is why we have created a
+          tool to help you manage them securely. Our password manager allows
+          users to store and organize their passwords, login credentials, and
+          other sensitive information in a secure, encrypted manner. It is
+          available as a web-based service and to use a vault, you would have to
+          remember only one Username and Password to login
+          <br />In addition to storing and generating passwords, SafeKeep also
+          offers a number of other features to help users keep their sensitive
+          information safe.
+        </p>
+      </div>
+      <div id="section2">
+        <h1>How does it work?</h1>
+        <p>
+          The website has a password manager feature that allows registered
+          users to save logging credentials (username, password, website) for
+          other websites. This information is stored in an encrypted form in the
+          database to ensure the security of the data. The website uses the
+          AES-256 encryption algorithm to encrypt the logging credentials stored
+          in the database. AES-256 is a widely used and highly secure encryption
+          algorithm that uses a complex key to encrypt and decrypt data. The
+          website also has a password generator feature that allows users to
+          create strong, unique passwords for use on other websites. These
+          passwords are not stored in the database and are provided to the user
+          for their own use. Overall, the website provides a convenient and
+          secure way for users to manage their logging credentials for other
+          websites, as well as generate strong passwords for use on those
+          websites. The encryption used ensures that the data stored in the
+          database is protected and cannot be accessed by unauthorized parties.
+        </p>
+      </div>
+      <div id="section3">
+        <h1>Generate Password</h1>
+        <p>
+          Generates strong, unique passwords for online accounts: Pgenerator can
+          generate random, secure passwords that meet the requirements of a
+          particular online service or account. This helps users avoid using
+          weak or reused passwords, which are more vulnerable to being hacked.
+        </p>
+        <div class="text-center">
+          <div class="row">
+            <div class="col-xs-6 col-md-2 img-fluid">
+              <img
+                src="static/images/pgenerator.png"
+                class="img-rounded"
+                style="max-width: 100%"
+                alt="pgenerator"
+              />
+            </div>
+            <div class="col-xs-6 col-md-2 img-fluid">
+              <img
+                src="static/images/pgfilter.png"
+                class="img-rounded"
+                style="max-width: 100%"
+                alt="pgenerator"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="section4">
+        <h1>Storing Login credentials</h1>
+        <p>
+          We use AES-256 encryption to keep your sensitive information, such as
+          passwords, safe and secure. Our encryption algorithm is virtually
+          impossible to crack, ensuring that your data is protected even if our
+          database is accessed by an unauthorized user. With our fast and
+          efficient encryption and decryption process, you can trust that your
+          passwords are in good hands. Protect your information and try our
+          password manager today.
+        </p>
+
+        <div class="row">
+          <div class="col-xs-7 col-md-2 img-fluid">
+            <img
+              src="static/images/credential.png"
+              class="img-rounded"
+              style="max-width: 100%"
+              alt="pgenerator"
+            />
+          </div>
+          <div class="col-xs-12 col-md-5 img-fluid align-middle">
+            <img
+              src="static/images/credential2.png"
+              class="img-rounded"
+              style="max-width: 100%"
+              alt="pgenerator"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>{% include "footer.html" %}</div>
 </body>
- {% endblock %}
-
-
-
+{% endblock %}
