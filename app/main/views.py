@@ -5,6 +5,6 @@ from . import main
 from .. import db
 
 
-@main.route('/', methods=['GET', 'POST'])
+@main.route("/", methods=["GET", "POST"])
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
