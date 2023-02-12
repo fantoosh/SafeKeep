@@ -7,9 +7,9 @@ from flask_login import UserMixin
 
 from .encryption import encrypt_credential, decrypt_credential
 
+
 # Define a base model for other database tables to inherit
 class Base(db.Model, UserMixin):
-
     __abstract__ = True
 
     id = db.Column(db.Integer, primary_key=True)
@@ -39,18 +39,17 @@ class Credential(Base):
         master_password = user.password_hash
         self.encrypted_password = encrypt_credential(password, master_password)
 
-    def decrypt_credential(self, paswword=encrypted_password):
+    def decrypt_credential(self, password=encrypted_password):
         user = User.query.filter_by(id=self.user_id).first()
         master_password = user.password_hash
-        return decrypt_credential(paswword, master_password)
+        return decrypt_credential(password, master_password)
 
     def __repr__(self):
-        return "<Credential %r>" % (self.username)
+        return "<Credential %r>" % self.username
 
 
 # Define a User model
 class User(Base):
-
     __tablename__ = "users"
 
     # User Name
@@ -95,7 +94,7 @@ class User(Base):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return "<User %r>" % (self.username)
+        return "<User %r>" % self.username
 
 
 class Role(db.Model):
