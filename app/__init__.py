@@ -58,7 +58,7 @@ def create_app(config_name):
 
     @app.context_processor
     def utility_processor():
-        def decrypt_credential(password: str, master_password) -> str:
+        def decrypt_credential(password: str, master_password) -> bytes:
             # convert password to byte
             # password = password.decode('utf-8')
             encrypt_key = generate_key(master_password, salt=SALT)
