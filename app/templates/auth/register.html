@@ -1,0 +1,107 @@
+{% extends "auth_layout.html" %}
+
+{% block title %}SafeKeep — Create account{% endblock %}
+
+{% block content %}
+<div class="sk-auth-shell">
+  <div class="sk-auth-card" style="width:460px;">
+
+    <div class="sk-auth-brand">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="6" fill="var(--accent)"/>
+        <path d="M8.5 11V8.5a3.5 3.5 0 0 1 7 0V11" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+        <rect x="6.5" y="11" width="11" height="8" rx="2" fill="white"/>
+        <circle cx="12" cy="14.5" r="1.4" fill="var(--accent)"/>
+        <rect x="11.4" y="14.5" width="1.2" height="2.4" rx="0.4" fill="var(--accent)"/>
+      </svg>
+      <span class="sk-auth-brand-name">SafeKeep</span>
+    </div>
+
+    <h1 class="sk-auth-title">Create your account</h1>
+    <p class="sk-auth-subtitle">A SafeKeep account is just an email and a master password. We never see either in plaintext.</p>
+
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+
+      <div class="sk-auth-field">
+        <label for="email">Email address</label>
+        {{ form.email(class="sk-input", id="email", placeholder="you@example.com", autocomplete="email") }}
+        <div class="sk-auth-hint">Used for account recovery. Stored hashed.</div>
+        {% for error in form.email.errors %}
+          <span class="sk-error">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="sk-auth-field">
+        <label for="username">Username</label>
+        {{ form.username(class="sk-input", id="username", placeholder="Choose a username", autocomplete="username") }}
+        {% for error in form.username.errors %}
+          <span class="sk-error">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="sk-auth-field">
+        <label for="password">Master password</label>
+        {{ form.password(class="sk-input", id="password", placeholder="Create a strong password", autocomplete="new-password", oninput="updateStrength(this.value)") }}
+        <div class="sk-strength" id="strengthMeter">
+          <div class="seg"></div><div class="seg"></div><div class="seg"></div>
+          <div class="seg"></div><div class="seg"></div>
+        </div>
+        <div style="font-size:11.5px;color:var(--ink-3);" id="strengthLabel">Choose a master password</div>
+        {% for error in form.password.errors %}
+          <span class="sk-error">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="sk-auth-field">
+        <label for="password2">Confirm master password</label>
+        {{ form.password2(class="sk-input", id="password2", placeholder="Repeat your password", autocomplete="new-password") }}
+        {% for error in form.password2.errors %}
+          <span class="sk-error">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div style="background:var(--bg-sunk);border:1px solid var(--line);border-radius:var(--r-md);padding:14px;margin-bottom:18px;">
+        <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);">
+          <div style="width:20px;height:20px;border-radius:5px;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8 3 3 7-7"/></svg>
+          </div>
+          <div style="font-size:12.5px;color:var(--ink-2);">Your master password is the key. It derives the encryption key for your vault locally on your device.</div>
+        </div>
+        <div style="display:flex;gap:10px;padding:8px 0;">
+          <div style="width:20px;height:20px;border-radius:5px;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;flex-shrink:0;margin-top:1px;">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8 3 3 7-7"/></svg>
+          </div>
+          <div style="font-size:12.5px;color:var(--ink-2);">If you forget it, your data is unrecoverable. SafeKeep cannot reset your master password.</div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">
+        Create vault
+      </button>
+    </form>
+
+    <div class="sk-auth-footer">
+      Already have an account? <a href="{{ url_for('auth.login') }}">Sign in &rarr;</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function updateStrength(pw) {
+  var meter = document.getElementById('strengthMeter');
+  var label = document.getElementById('strengthLabel');
+  var score = 0;
+  if (pw.length >= 8) score++;
+  if (pw.length >= 12) score++;
+  if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^a-zA-Z0-9]/.test(pw)) score++;
+  meter.className = 'sk-strength s' + score;
+  var labels = ['', 'Very weak', 'Weak', 'Fair', 'Strong', 'Very strong'];
+  label.textContent = pw.length === 0 ? 'Choose a master password' : (labels[score] || 'Very strong');
+  label.style.color = score <= 2 ? 'var(--bad)' : score === 3 ? 'var(--warn)' : 'var(--good)';
+}
+</script>
+{% endblock %}

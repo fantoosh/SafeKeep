@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}SafeKeep — Server error{% endblock %}
+{% block content %}
+<div style="display:flex;align-items:center;justify-content:center;height:calc(100vh - 52px);text-align:center;padding:40px;">
+  <div>
+    <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--bad);margin-bottom:10px;">500</div>
+    <div style="font-size:22px;font-weight:600;letter-spacing:-0.015em;color:var(--ink);margin-bottom:6px;">Internal server error</div>
+    <div style="font-size:13px;color:var(--ink-3);margin-bottom:22px;">Something went wrong. Please try again.</div>
+    <a href="/" class="btn btn-primary">Back to home</a>
+  </div>
+</div>
+{% endblock %}

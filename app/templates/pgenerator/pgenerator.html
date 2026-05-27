@@ -1,0 +1,223 @@
+{% extends "layout.html" %}
+
+{% block title %}SafeKeep — Password Generator{% endblock %}
+
+{% block content %}
+
+<div class="sk-topbar">
+  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="var(--ink-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+    <circle cx="6" cy="8" r="2.5"/><path d="M8.5 8h5M11 8v2M13 8v1.5"/>
+  </svg>
+  <span class="sk-topbar-title">Password Generator</span>
+  <div class="sk-topbar-spacer"></div>
+</div>
+
+<div class="sk-content">
+  <div class="sk-gen-wrap">
+
+    <p style="font-size:13px;color:var(--ink-3);margin-bottom:20px;">
+      Cryptographically random. Generated server-side on each request.
+    </p>
+
+    <!-- Generated password display -->
+    <div class="sk-gen-pw-box">
+      <input type="text" id="generatedPw" value="{{ password }}" readonly
+             style="flex:1;background:transparent;border:none;box-shadow:none;color:var(--ink);font-family:var(--font-mono);font-size:15px;letter-spacing:0.05em;outline:none;padding:0;height:auto;width:0;">
+      <button class="btn btn-sm" onclick="copyPassword()" title="Copy" style="flex-shrink:0;gap:4px;">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 10V4a1 1 0 0 1 1-1h6"/>
+        </svg>
+        Copy
+      </button>
+    </div>
+
+    <!-- Strength indicator -->
+    <div class="sk-strength" id="pwStrength" style="margin-bottom:6px;">
+      <div class="seg"></div><div class="seg"></div><div class="seg"></div>
+      <div class="seg"></div><div class="seg"></div>
+    </div>
+    <div style="font-size:11.5px;color:var(--ink-3);margin-bottom:20px;" id="pwStrengthLabel">&nbsp;</div>
+
+    <!-- Generate actions -->
+    <div class="sk-gen-actions">
+      <button class="btn btn-primary" onclick="quickGenerate()" style="gap:6px;">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9"/><path d="M14 2.5V5h-2.5"/>
+        </svg>
+        Regenerate
+      </button>
+      <button class="btn" data-toggle="modal" data-target="#customizeModal" style="gap:6px;">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="8" r="2"/><path d="M8 1v2M8 13v2M14.5 4.7l-1.7 1M3.2 10.3l-1.7 1M14.5 11.3l-1.7-1M3.2 5.7l-1.7-1M15 8h-2M3 8H1"/>
+        </svg>
+        Customize
+      </button>
+    </div>
+
+    <div class="sk-divider"></div>
+
+    <!-- Tips -->
+    <div style="background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 18px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;">Tips</div>
+      <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
+        <li style="font-size:12px;color:var(--ink-3);display:flex;gap:8px;">
+          <span style="color:var(--accent);font-weight:600;">·</span>
+          Use a unique password for every account.
+        </li>
+        <li style="font-size:12px;color:var(--ink-3);display:flex;gap:8px;">
+          <span style="color:var(--accent);font-weight:600;">·</span>
+          Longer passwords are exponentially harder to crack.
+        </li>
+        <li style="font-size:12px;color:var(--ink-3);display:flex;gap:8px;">
+          <span style="color:var(--accent);font-weight:600;">·</span>
+          Mix uppercase, lowercase, numbers, and symbols.
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- Customize Modal -->
+<div class="modal fade" id="customizeModal" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title" id="customizeModalLabel">Customize password</h4>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+
+      <div class="modal-body">
+        <form action="/pgenerator" method="post" id="genForm">
+
+          <div style="margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <label style="font-size:12px;font-weight:500;color:var(--ink-2);margin:0;">Length</label>
+              <output id="lenOutput" style="font-family:var(--font-mono);font-size:12px;color:var(--accent-ink);background:var(--accent-soft);border-radius:3px;padding:1px 7px;">13</output>
+            </div>
+            <input type="range" id="length" name="length" min="8" max="40" value="13"
+                   oninput="document.getElementById('lenOutput').textContent=this.value">
+          </div>
+
+          <div style="border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-bottom:16px;">
+            <div class="modal-body" style="padding:0 !important;">
+              <div class="form-check" style="border-bottom:1px solid var(--line) !important;">
+                <input class="form-check-input" type="checkbox" id="asciiF" name="asciiF" onclick="checkValidity()" checked>
+                <label class="form-check-label" for="asciiF">Include letters (A–Z)</label>
+              </div>
+              <div class="form-check" style="border-bottom:1px solid var(--line) !important;">
+                <input class="form-check-input" type="checkbox" id="lowerF" name="lowerF" onclick="checkValidity()" checked>
+                <label class="form-check-label" for="lowerF">Lowercase (a–z)</label>
+              </div>
+              <div class="form-check" style="border-bottom:1px solid var(--line) !important;">
+                <input class="form-check-input" type="checkbox" id="upperF" name="upperF" onclick="checkValidity()" checked>
+                <label class="form-check-label" for="upperF">Uppercase (A–Z)</label>
+              </div>
+              <div class="form-check" style="border-bottom:1px solid var(--line) !important;">
+                <input class="form-check-input" type="checkbox" id="digitsF" name="digitsF" onclick="checkValidity()" checked>
+                <label class="form-check-label" for="digitsF">Numbers (0–9)</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="puncF" name="puncF" onclick="checkValidity()" checked>
+                <label class="form-check-label" for="puncF">Symbols (!@#$…)</label>
+              </div>
+            </div>
+          </div>
+
+          <p style="color:var(--bad);font-size:12px;min-height:16px;margin:0 0 14px;" id="validationMsg"></p>
+
+          <button class="btn btn-primary" id="submitBtn" type="submit" style="width:100%;justify-content:center;">
+            Generate password
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Evaluate strength of current password
+  (function() {
+    var pw = document.getElementById('generatedPw').value;
+    scoreAndShow(pw);
+  })();
+
+  function scoreAndShow(pw) {
+    var score = 0;
+    if (pw.length >= 8) score++;
+    if (pw.length >= 14) score++;
+    if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[^a-zA-Z0-9]/.test(pw)) score++;
+    document.getElementById('pwStrength').className = 'sk-strength s' + score;
+    var labels = ['', 'Very weak', 'Weak', 'Fair', 'Strong', 'Very strong'];
+    var lel = document.getElementById('pwStrengthLabel');
+    lel.textContent = labels[score] || 'Very strong';
+    lel.style.color = score <= 2 ? 'var(--bad)' : score === 3 ? 'var(--warn)' : 'var(--good)';
+  }
+
+  function copyPassword() {
+    var input = document.getElementById('generatedPw');
+    var val = input.value;
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(val).then(function() { showCopyToast(); });
+    } else {
+      input.select();
+      input.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+      showCopyToast();
+    }
+  }
+
+  function showCopyToast() {
+    var stack = document.getElementById('toastStack');
+    if (!stack) {
+      stack = document.createElement('div');
+      stack.className = 'sk-toast-stack';
+      stack.id = 'toastStack';
+      document.body.appendChild(stack);
+    }
+    var t = document.createElement('div');
+    t.className = 'sk-toast';
+    t.textContent = 'Password copied';
+    stack.appendChild(t);
+    setTimeout(function() {
+      t.style.transition = 'opacity 0.3s';
+      t.style.opacity = '0';
+      setTimeout(function() { t.remove(); }, 300);
+    }, 2000);
+  }
+
+  function quickGenerate() {
+    document.getElementById('genForm').submit();
+  }
+
+  function checkValidity() {
+    var ascii = document.getElementById('asciiF');
+    var lowerF = document.getElementById('lowerF');
+    var upperF = document.getElementById('upperF');
+    var digitsF = document.getElementById('digitsF');
+    var puncF = document.getElementById('puncF');
+    var submitBtn = document.getElementById('submitBtn');
+    var msg = document.getElementById('validationMsg');
+
+    if (!ascii.checked) { lowerF.disabled = true; upperF.disabled = true; }
+    else { lowerF.disabled = false; upperF.disabled = false; }
+    if (!upperF.checked && !lowerF.checked) { ascii.disabled = true; }
+    else { ascii.disabled = false; }
+
+    var hasLetters = ascii.checked && !ascii.disabled;
+    var total = (hasLetters ? 1 : 0) + (digitsF.checked ? 1 : 0) + (puncF.checked ? 1 : 0);
+    if (total === 0) {
+      submitBtn.disabled = true;
+      msg.textContent = 'Select at least one character type.';
+    } else {
+      submitBtn.disabled = false;
+      msg.textContent = '';
+    }
+  }
+</script>
+{% endblock %}

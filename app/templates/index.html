@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% block title %}SafeKeep — Password Manager{% endblock %}
+
+{% block content %}
+
+<!-- Topbar -->
+<div class="sk-topbar">
+  <span class="sk-topbar-title">Welcome to SafeKeep</span>
+  <div class="sk-topbar-spacer"></div>
+  {% if not current_user.is_authenticated %}
+    <a href="{{ url_for('auth.login') }}" class="btn btn-sm">Sign in</a>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-sm">Create account</a>
+  {% else %}
+    <a href="{{ url_for('vault.view_credentials') }}" class="btn btn-primary btn-sm">Open vault</a>
+  {% endif %}
+</div>
+
+<!-- Hero content -->
+<div class="sk-content">
+
+  <!-- Hero card -->
+  <div style="background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-lg);padding:40px 36px;margin-bottom:20px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:260px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;">Password Manager</div>
+      <h1 style="font-family:var(--font-sans);font-size:28px;font-weight:700;letter-spacing:-0.02em;color:var(--ink);margin:0 0 10px;">One vault.<br>Every password.</h1>
+      <p style="font-size:14px;color:var(--ink-3);line-height:1.65;margin:0 0 22px;max-width:380px;">
+        Store and manage your login credentials with AES-256 encryption. Only you can decrypt your vault.
+      </p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="{{ url_for('vault.view_credentials') }}" class="btn btn-primary">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"/><circle cx="9" cy="8" r="2"/><path d="M9 6V5M9 11v-1M11 8h1M6 8h1"/></svg>
+          Open vault
+        </a>
+        <a href="{{ url_for('pgenerator.pgenerate') }}" class="btn">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="8" r="2.5"/><path d="M8.5 8h5M11 8v2M13 8v1.5"/></svg>
+          Generator
+        </a>
+      </div>
+    </div>
+    <div style="flex-shrink:0;">
+      <div style="width:120px;height:120px;border-radius:20px;background:var(--accent-soft);display:grid;place-items:center;">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="6" fill="var(--accent)"/>
+          <path d="M8.5 11V8.5a3.5 3.5 0 0 1 7 0V11" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+          <rect x="6.5" y="11" width="11" height="8" rx="2" fill="white"/>
+          <circle cx="12" cy="14.5" r="1.4" fill="var(--accent)"/>
+          <rect x="11.4" y="14.5" width="1.2" height="2.4" rx="0.4" fill="var(--accent)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature cards -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px;">
+
+    <div style="background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-md);padding:20px;">
+      <div style="width:32px;height:32px;border-radius:8px;background:var(--accent-soft);display:grid;place-items:center;margin-bottom:12px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--accent-ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 1.5 3 3.5v3.7c0 3.2 2 6.1 5 7.3 3-1.2 5-4.1 5-7.3V3.5L8 1.5Z"/>
+          <path d="m6 8 1.5 1.5L10.5 6.5"/>
+        </svg>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px;">AES-256 Encryption</div>
+      <div style="font-size:12px;color:var(--ink-3);line-height:1.55;">Military-grade encryption. Your passwords are encrypted before touching the database.</div>
+    </div>
+
+    <div style="background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-md);padding:20px;">
+      <div style="width:32px;height:32px;border-radius:8px;background:var(--good-soft);display:grid;place-items:center;margin-bottom:12px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--good)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="6" cy="8" r="2.5"/><path d="M8.5 8h5M11 8v2M13 8v1.5"/>
+        </svg>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px;">Password Generator</div>
+      <div style="font-size:12px;color:var(--ink-3);line-height:1.55;">Cryptographically random passwords. Custom length, uppercase, symbols, digits.</div>
+    </div>
+
+    <div style="background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-md);padding:20px;">
+      <div style="width:32px;height:32px;border-radius:8px;background:var(--warn-soft);display:grid;place-items:center;margin-bottom:12px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--warn)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="7" width="10" height="6.5" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/>
+        </svg>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px;">One Master Password</div>
+      <div style="font-size:12px;color:var(--ink-3);line-height:1.55;">Remember just one password. Your vault key is derived using PBKDF2 with 100k iterations.</div>
+    </div>
+
+  </div>
+
+  <!-- How it works -->
+  <div style="background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-md);padding:22px 24px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-4);margin-bottom:14px;">How it works</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px;">1. Register</div>
+        <div style="font-size:12px;color:var(--ink-3);">Create an account with your email and a master password.</div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px;">2. Add credentials</div>
+        <div style="font-size:12px;color:var(--ink-3);">Store website logins. Each is encrypted immediately.</div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px;">3. Access anywhere</div>
+        <div style="font-size:12px;color:var(--ink-3);">Sign in and decrypt your credentials on demand.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

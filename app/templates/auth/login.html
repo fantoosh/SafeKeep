@@ -1,0 +1,70 @@
+{% extends "auth_layout.html" %}
+
+{% block title %}SafeKeep — Sign in{% endblock %}
+
+{% block content %}
+<div class="sk-auth-shell">
+  <div class="sk-auth-card">
+
+    <div class="sk-auth-brand">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="6" fill="var(--accent)"/>
+        <path d="M8.5 11V8.5a3.5 3.5 0 0 1 7 0V11" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+        <rect x="6.5" y="11" width="11" height="8" rx="2" fill="white"/>
+        <circle cx="12" cy="14.5" r="1.4" fill="var(--accent)"/>
+        <rect x="11.4" y="14.5" width="1.2" height="2.4" rx="0.4" fill="var(--accent)"/>
+      </svg>
+      <span class="sk-auth-brand-name">SafeKeep</span>
+    </div>
+
+    <h1 class="sk-auth-title">Unlock your vault</h1>
+    <p class="sk-auth-subtitle">Enter your credentials to access your passwords.</p>
+
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+
+      <div class="sk-auth-field">
+        <label for="email">Email address</label>
+        {{ form.email(class="sk-input", id="email", placeholder="you@example.com", autocomplete="email") }}
+        {% for error in form.email.errors %}
+          <span class="sk-error">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="sk-auth-field">
+        <label for="password">Master password</label>
+        {{ form.password(class="sk-input", id="password", placeholder="Your master password", autocomplete="current-password") }}
+        {% for error in form.password.errors %}
+          <span class="sk-error">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <label class="sk-auth-remember">
+        {{ form.remember_me(id="remember_me") }}
+        Keep me signed in
+      </label>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="7" width="10" height="6.5" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 5.5-1.7"/>
+        </svg>
+        Unlock vault
+      </button>
+    </form>
+
+    <div class="sk-auth-security">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;color:var(--ink-4)">
+        <path d="M8 1.5 3 3.5v3.7c0 3.2 2 6.1 5 7.3 3-1.2 5-4.1 5-7.3V3.5L8 1.5Z"/>
+      </svg>
+      <div>
+        Passwords encrypted with AES-256. Your master password never leaves your device.
+      </div>
+    </div>
+
+    <div class="sk-auth-footer">
+      No account? <a href="{{ url_for('auth.register') }}">Create one &rarr;</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

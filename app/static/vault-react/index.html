@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SafeKeep — Password Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/vault-react/styles.css"/>
+  <style>
+    /* Extend sidebar to show current user */
+    .sidebar-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 100ms;
+    }
+    .sidebar-user:hover { background: var(--bg-hover); }
+    .sidebar-user-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent-ink);
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .sidebar-user-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="/static/vault-react/tweaks-panel.jsx"></script>
+  <script type="text/babel" src="/static/vault-react/shared.jsx"></script>
+  <script type="text/babel" src="/static/vault-react/data.jsx"></script>
+  <script type="text/babel" src="/static/vault-react/vault-shell.jsx"></script>
+  <script type="text/babel" src="/static/vault-react/vault-detail.jsx"></script>
+  <script type="text/babel" src="/static/vault-react/vault-views.jsx"></script>
+  <script type="text/babel" src="/static/vault-react/app.jsx"></script>
+</body>
+</html>
